@@ -1,0 +1,87 @@
+name: private-computer-p0
+services:
+  computer:
+    image: "${BOT_ACP_IMAGE:-private-computer:acp}"
+    ports:
+      - "127.0.0.1:${BOT_PORT:-3180}:3180"
+    environment:
+      APP_ROLE: control
+      OWNER_PASSWORD_FILE: /run/private-computer/owner-password
+      RUNNER_TOKEN_FILE: /run/private-computer/runner-token
+      MODEL_API_KEY_FILE: /run/private-computer/model-key
+      APP_ORIGIN: "http://localhost:${BOT_PORT:-3180}"
+      WORKSPACE_DIR: /workspace
+      DATA_DIR: /var/lib/private-computer
+      DESKTOP_RUNNER_URL: http://desktop:3181
+      DESKTOP_VNC_HOST: desktop
+      INTERNAL_CONTROL_ORIGIN: http://control:3180
+      MODEL_ENABLED: "${MODEL_ENABLED:-1}"
+      MODEL_EXECUTOR: dsh-acp
+      DSH_ACP_NODE: /opt/private-node/node_modules/node/bin/node
+      DSH_ACP_ENTRY: /opt/dsh/node_modules/@deepseek-ai/dsh/lib/bin.js
+      DSH_ACP_WORK_ROOT: /run/private-computer/acp
+      MODEL_BASE_URL: "${MODEL_BASE_URL:-https://api.xingchiapi.com}"
+      MODEL_NAME: "${MODEL_NAME:-gpt-6.1-sol}"
+      MODEL_EFFORT: "${MODEL_EFFORT:-max}"
+    secrets: [owner-password, runner-token, model-key]
+    tmpfs: [/run/private-computer]
+    volumes:
+      - type: volume
+        source: computer-home
+        target: /workspace
+        volume:
+          subpath: Workspace
+      - control-state:/var/lib/private-computer
+    networks:
+      desktop-net:
+        aliases: [control]
+      internet-net:
+    depends_on: [desktop, egress]
+    security_opt: [seccomp=./deploy/compose/chromium-seccomp.json]
+    shm_size: 512mb
+    mem_limit: 1536m
+    cpus: 1
+    pids_limit: 384
+    restart: "no"
+  desktop:
+    image: "${BOT_IMAGE:-private-computer:mvp}"
+    environment:
+      APP_ROLE: desktop
+      RUNNER_PORT: "3181"
+      INTERNAL_CONTROL_ORIGIN: http://control:3180
+      BROWSER_PROXY_URL: http://egress:3128
+      ALLOW_UNSANDBOXED_BROWSER: "0"
+    secrets: [runner-token]
+    tmpfs: [/run/private-runner]
+    volumes: [computer-home:/home/desktop]
+    networks: [desktop-net]
+    security_opt: [seccomp=./deploy/compose/chromium-seccomp.json]
+    shm_size: 1gb
+    mem_limit: 3g
+    cpus: 2
+    pids_limit: 512
+    restart: "no"
+  egress:
+    image: "${BOT_IMAGE:-private-computer:mvp}"
+    environment:
+      APP_ROLE: egress
+      EGRESS_PORT: "3128"
+    networks: [desktop-net, internet-net]
+    mem_limit: 192m
+    cpus: 0.5
+    pids_limit: 64
+    restart: "no"
+secrets:
+  owner-password:
+    file: "${BOT_SECRET_DIR:?Run scripts/dev.sh init}/owner-password"
+  runner-token:
+    file: "${BOT_SECRET_DIR:?Run scripts/dev.sh init}/runner-token"
+  model-key:
+    file: "${BOT_SECRET_DIR:?Run scripts/dev.sh init}/model-key"
+volumes:
+  computer-home:
+  control-state:
+networks:
+  desktop-net:
+    internal: true
+  internet-net:

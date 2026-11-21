@@ -1,0 +1,11 @@
+# Local credentials, runtime state, and evidence
+.local/
+.env
+.env.*
+!.env.example
+secrets/
+node_modules/
+coverage/
+*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,24 @@
+# Preserved rollback profile for the previously verified immutable P0 image.
+name: private-computer-p0
+services:
+  computer:
+    image: private-computer:p0
+    ports:
+      - "127.0.0.1:${BOT_PORT:-3180}:3180"
+    environment:
+      MODEL_ENABLED: "0"
+      APP_ORIGIN: "http://localhost:${BOT_PORT:-3180}"
+      ALLOW_UNSANDBOXED_BROWSER: "${ALLOW_UNSANDBOXED_BROWSER:-0}"
+    secrets: [owner-password]
+    volumes: [computer-home:/home/desktop]
+    security_opt: [seccomp=./deploy/compose/chromium-seccomp.json]
+    shm_size: 1gb
+    mem_limit: 3g
+    cpus: 2
+    pids_limit: 512
+    restart: "no"
+secrets:
+  owner-password:
+    file: "${BOT_SECRET_DIR:?Set the existing private state directory}/owner-password"
+volumes:
+  computer-home:

@@ -1,0 +1,31 @@
+/* Work handoff controls follow the existing sidebar spacing and colors. */
+.scope-fields { display: grid; gap: 7px; min-width: 0; margin: 0; padding: 9px 0 0; border: 0; }
+.scope-fields legend { padding: 0 0 3px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+.scope-fields label { font-size: 12px; line-height: 1.65; }
+.handoff-panel, .artifact-panel, .recovery-panel { display: grid; gap: 10px; }
+.handoff-panel .sidebar-heading, .artifact-panel .sidebar-heading, .recovery-panel .sidebar-heading { margin-bottom: 0; }
+.handoff-panel h3, .artifact-panel h3 { margin: 0; font-size: 13px; font-weight: 650; }
+.handoff-panel .plain-text, .artifact-panel .plain-text { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; line-height: 1.7; }
+.handoff-panel select, .handoff-panel input[type="number"], .handoff-panel textarea, .artifact-panel select { min-width: 0; box-sizing: border-box; width: 100%; border: 1px solid #aeb7c1; background: #fff; color: inherit; border-radius: 5px; padding: 7px; font: inherit; font-size: 12px; }
+.handoff-panel textarea { resize: vertical; line-height: 1.7; }
+.handoff-panel input[type="number"] { max-width: 170px; }
+.field-label, .handoff-form > label, .extra-budget > label { font-size: 12px; line-height: 1.65; }
+#work-detail { display: grid; gap: 10px; }
+.handoff-form { display: grid; gap: 8px; margin: 0; padding-top: 12px; border-top: 1px solid var(--line); }
+.handoff-form > button, .artifact-review > button { justify-self: start; white-space: normal; text-align: left; }
+.extra-budget { padding: 7px 0; font-size: 12px; }
+.extra-budget summary { cursor: pointer; margin-bottom: 7px; }
+.extra-budget > label { display: block; margin: 8px 0 4px; }
+.handoff-facts { display: grid; gap: 9px; padding: 10px; background: #f3f5f8; border-left: 3px solid var(--blue); }
+.handoff-facts p, .handoff-facts ul { margin: 0; font-size: 12px; line-height: 1.7; overflow-wrap: anywhere; }
+.handoff-facts ul { padding-left: 18px; }
+.handoff-facts .fact-label { color: var(--muted); }
+.artifact-list { list-style: none; padding: 0; margin: 0; }
+.artifact-item { display: grid; gap: 7px; padding: 11px 0; border-top: 1px solid #eceef1; }
+.artifact-item .task-actions { flex-wrap: wrap; }
+.artifact-item button { font-size: 12px; padding: 5px 8px; white-space: normal; }
+.artifact-review { display: grid; gap: 9px; border-top: 1px solid var(--line); padding-top: 11px; }
+.artifact-review pre { max-height: 22rem; overflow: auto; min-width: 0; margin: 0; padding: 9px; background: #f0f2f5; font: 11px/1.65 ui-monospace, Consolas, monospace; }
+.control-stop { margin-bottom: 10px; overflow-wrap: anywhere; }
+.task-actions { flex-wrap: wrap; }
+button:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid #8aaee6; outline-offset: 3px; }

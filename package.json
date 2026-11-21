@@ -1,0 +1,13 @@
+{
+  "name": "private-cloud-computer",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Local-first private cloud computer P0 validation",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node apps/control/src/server.mjs",
+    "test": "node --test apps/control/test/*.test.mjs",
+    "check": "node scripts/check.mjs"
+  }
+}
